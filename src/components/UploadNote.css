@@ -1,0 +1,41 @@
+.upload-note-container {
+  max-width: 400px;
+  margin: auto;
+  padding: 1.5rem;
+  background: #f5f5f5;
+  border-radius: 12px;
+  box-shadow: 0 0 10px #ccc;
+}
+
+.upload-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.upload-form input,
+.upload-form textarea {
+  padding: 0.7rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+}
+
+.upload-form button {
+  padding: 0.8rem;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.upload-form button:hover {
+  background-color: #0056b3;
+}
+
+.message {
+  margin-top: 10px;
+  font-weight: bold;
+}

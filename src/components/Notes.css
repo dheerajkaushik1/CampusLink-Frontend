@@ -1,0 +1,88 @@
+.notes-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.notes-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.notes-title {
+  font-size: 28px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.upload-note-button {
+  padding: 8px 16px;
+  font-size: 14px;
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+.upload-note-button:hover {
+  background-color: #1d4ed8;
+}
+
+.notes-list {
+  list-style: none;
+  padding: 0;
+}
+
+.note-item {
+  display: flex;
+  flex-direction: column;
+  background: #f8fafc;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  padding: 12px 16px;
+  margin-bottom: 16px;
+  position: relative;
+}
+
+.note-link {
+  text-decoration: none;
+  color: #0f172a;
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+
+.note-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.note-btn {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.note-btn.edit {
+  background-color: #e0f2fe;
+  color: #0284c7;
+}
+.note-btn.delete {
+  background-color: #fee2e2;
+  color: #b91c1c;
+}
+.note-btn.save {
+  background-color: #d1fae5;
+  color: #065f46;
+}
+
+.note-input {
+  margin-bottom: 8px;
+  padding: 6px;
+  font-size: 14px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+}
