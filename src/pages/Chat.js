@@ -1,37 +1,59 @@
 import React, { useEffect, useState, useRef } from 'react';
 import './Chat.css';
+import { useNavigate } from 'react-router-dom';
 
 function Chat() {
   const [messages, setMessages] = useState([]);
   const [text, setText] = useState('');
   const [year, setYear] = useState('');
   const messagesEndRef = useRef(null);
+  const navigate = useNavigate();
 
   const token = localStorage.getItem('token');
   const userId = token ? JSON.parse(atob(token.split('.')[1])).id : null;
 
+  // Redirect if no token
+  useEffect(() => {
+    if (!token) {
+      navigate('/login');
+    }
+  }, [token, navigate]);
+
   const fetchUserYear = async () => {
-    const res = await fetch('https://campuslink-4xaw.onrender.com/api/auth/getuser', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'auth-token': token }
-    });
-    const data = await res.json();
-    if (res.ok && data.year) {
+    try {
+      const res = await fetch('https://campuslink-4xaw.onrender.com/api/auth/getuser', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'auth-token': token }
+      });
+      const data = await res.json();
+
+      if (!res.ok) throw new Error(data.error || 'Unauthorized');
       setYear(data.year);
+    } catch (err) {
+      console.error('❌ Failed to fetch user year:', err.message);
     }
   };
 
   const fetchMessages = async () => {
-    const res = await fetch('https://campuslink-4xaw.onrender.com/api/chat', {
-      headers: { 'auth-token': token }
-    });
-    const data = await res.json();
-    setMessages(data);
+    try {
+      const res = await fetch('https://campuslink-4xaw.onrender.com/api/chat', {
+        headers: { 'auth-token': token }
+      });
+      const data = await res.json();
+
+      if (!res.ok || !Array.isArray(data)) throw new Error('Failed to load messages');
+      setMessages(data);
+    } catch (err) {
+      console.error('❌ Failed to fetch messages:', err.message);
+      setMessages([]);
+    }
   };
 
   useEffect(() => {
-    fetchUserYear();     
-    fetchMessages();     
+    if (token) {
+      fetchUserYear();
+      fetchMessages();
+    }
   }, [token]);
 
   useEffect(() => {
@@ -42,32 +64,39 @@ function Chat() {
     e.preventDefault();
     if (!text.trim()) return;
 
-    const res = await fetch('https://campuslink-4xaw.onrender.com/api/chat', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'auth-token': token
-      },
-      body: JSON.stringify({ text })  
-    });
+    try {
+      const res = await fetch('https://campuslink-4xaw.onrender.com/api/chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'auth-token': token
+        },
+        body: JSON.stringify({ text })
+      });
 
-    const data = await res.json();
-    if (res.ok) {
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Message send failed');
+
       setMessages(prev => [...prev, data]);
       setText('');
+    } catch (err) {
+      console.error('❌ Send error:', err.message);
     }
   };
 
   const handleDelete = async (id) => {
     if (!window.confirm('Delete this message?')) return;
 
-    const res = await fetch(`https://campuslink-4xaw.onrender.com/api/chat/${id}`, {
-      method: 'DELETE',
-      headers: { 'auth-token': token }
-    });
+    try {
+      const res = await fetch(`https://campuslink-4xaw.onrender.com/api/chat/${id}`, {
+        method: 'DELETE',
+        headers: { 'auth-token': token }
+      });
 
-    if (res.ok) {
+      if (!res.ok) throw new Error('Failed to delete');
       setMessages(prev => prev.filter(msg => msg._id !== id));
+    } catch (err) {
+      console.error('❌ Delete error:', err.message);
     }
   };
 
@@ -76,18 +105,22 @@ function Chat() {
       <h2>💬 {year ? `${year} Year Chat` : 'Loading...'}</h2>
 
       <div className="chat-box">
-        {messages.map((msg, idx) => (
-          <div key={idx} className="chat-message">
-            <div>
-              <strong>{msg.name || 'Anonymous'}:</strong>
-              <span> {msg.text}</span>
-              <small>{new Date(msg.timestamp).toLocaleTimeString()}</small>
+        {Array.isArray(messages) && messages.length > 0 ? (
+          messages.map((msg, idx) => (
+            <div key={idx} className="chat-message">
+              <div>
+                <strong>{msg.name || 'Anonymous'}:</strong>
+                <span> {msg.text}</span>
+                <small>{new Date(msg.timestamp).toLocaleTimeString()}</small>
+              </div>
+              {msg.user === userId && (
+                <button className="delete-btn" onClick={() => handleDelete(msg._id)}>🗑️</button>
+              )}
             </div>
-            {msg.user === userId && (
-              <button className="delete-btn" onClick={() => handleDelete(msg._id)}>🗑️</button>
-            )}
-          </div>
-        ))}
+          ))
+        ) : (
+          <p className="no-msg">No messages yet.</p>
+        )}
         <div ref={messagesEndRef} />
       </div>
 
