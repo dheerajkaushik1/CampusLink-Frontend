@@ -1,15 +1,43 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './UploadNote.css';
+import { useNavigate } from 'react-router-dom';
 
 function UploadNote() {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [pdfFile, setPdfFile] = useState(null);
   const [message, setMessage] = useState('');
+  const [isUploading, setIsUploading] = useState(false);
+  const navigate = useNavigate();
 
+  // ✅ Admin check on mount
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (!token) return navigate('/login');
+
+    fetch('https://campuslink-4xaw.onrender.com/api/auth/getuser', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'auth-token': token
+      }
+    })
+      .then(res => res.json())
+      .then(data => {
+        if (!data.isAdmin) {
+          alert('⛔ Access Denied: Admins Only');
+          navigate('/');
+        }
+      })
+      .catch(() => {
+        alert('⛔ Failed to verify user');
+        navigate('/');
+      });
+  }, [navigate]);
+
+  // ✅ Handle Upload
   const handleUpload = async (e) => {
     e.preventDefault();
-
     if (!title || !description || !pdfFile) {
       setMessage('⚠️ Please fill all fields and select a PDF');
       return;
@@ -21,9 +49,13 @@ function UploadNote() {
     formData.append('pdf', pdfFile);
 
     try {
+      setIsUploading(true);
       const res = await fetch('https://campuslink-4xaw.onrender.com/api/notes/uploadnotes', {
         method: 'POST',
-        body: formData,
+        headers: {
+          'auth-token': localStorage.getItem('token') // ✅ Secure header
+        },
+        body: formData
       });
 
       const contentType = res.headers.get('content-type');
@@ -38,14 +70,17 @@ function UploadNote() {
         throw new Error(`❌ Unexpected response: ${raw.slice(0, 100)}`);
       }
 
-      const result = await res.json();
+      await res.json();
       setMessage('✅ Note uploaded successfully!');
       setTitle('');
       setDescription('');
       setPdfFile(null);
+      document.getElementById('pdf-input').value = ''; // Reset file input
     } catch (err) {
       console.error('❌ Upload error:', err);
       setMessage(err.message || '❌ Upload failed');
+    } finally {
+      setIsUploading(false);
     }
   };
 
@@ -69,10 +104,13 @@ function UploadNote() {
         <input
           type="file"
           accept="application/pdf"
+          id="pdf-input"
           onChange={(e) => setPdfFile(e.target.files[0])}
           required
         />
-        <button type="submit">Upload Note</button>
+        <button type="submit" disabled={isUploading}>
+          {isUploading ? 'Uploading...' : 'Upload Note'}
+        </button>
         {message && <p className="message">{message}</p>}
       </form>
     </div>

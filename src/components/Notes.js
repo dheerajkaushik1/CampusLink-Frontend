@@ -115,9 +115,11 @@ function Notes() {
       <div className="notes-container">
         <div className="notes-header">
           <h2 className="notes-title">Available Notes</h2>
-          <button className="upload-note-button" onClick={() => navigate('/uploadnote')}>
-            Upload Note
-          </button>
+          {isAdmin && (
+            <button className="upload-note-button" onClick={() => navigate('/uploadnote')}>
+              Upload Note
+            </button>
+          )}
         </div>
 
         {notes.length === 0 ? (
