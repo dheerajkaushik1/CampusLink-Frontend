@@ -11,7 +11,9 @@ import UploadNotice from './components/UploadNotice';
 import Chat from './pages/Chat';
 import UploadNote from './components/UploadNote';
 import Home from './pages/Home';
-import Doubt from './components/Doubt';  
+import DoubtList from './components/DoubtList';
+import AskDoubt from './pages/AskDoubt';
+import DoubtDetail from './pages/DoubtDetail';
 
 function App() {
   return (
@@ -27,7 +29,9 @@ function App() {
         <Route path='/chat' element={<Chat />} key='notes' />
         <Route path="/uploadnote" element={<UploadNote />} />
         <Route path='/' element={<Home />} />
-        <Route path='/doubt' element={<Doubt />} />
+        <Route path="/doubts" element={<DoubtList />} />
+        <Route path="/ask-doubt" element={<AskDoubt />} />
+        <Route path="/doubts/:id" element={<DoubtDetail />} />
       </Routes>
       <Footer />
       </BrowserRouter>

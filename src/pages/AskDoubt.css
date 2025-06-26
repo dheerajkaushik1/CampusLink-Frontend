@@ -1,0 +1,41 @@
+.ask-doubt-container {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 30px 20px;
+  height: 80vh;
+}
+
+.ask-doubt-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.ask-doubt-form input,
+.ask-doubt-form textarea {
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  resize: vertical;
+}
+
+.ask-doubt-form button {
+  padding: 10px 16px;
+  font-size: 15px;
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.ask-doubt-form button:hover {
+  background-color: #1d4ed8;
+}
+
+.message {
+  font-size: 14px;
+  color: green;
+}

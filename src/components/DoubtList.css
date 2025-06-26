@@ -1,0 +1,105 @@
+.doubt-list-container {
+  max-width: 800px;
+  margin: auto;
+  padding: 20px;
+  color: #eee;
+  height: 80vh;
+}
+
+.doubt-header-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  color: #007bff;
+}
+
+.doubt-controls {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.ask-doubt-btn {
+  background-color: #4caf50;
+  color: white;
+  padding: 8px 16px;
+  font-weight: bold;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.ask-doubt-btn:hover {
+  background-color: #45a049;
+}
+
+.my-doubts-toggle {
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+}
+
+.doubt-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.doubt-item {
+  background-color: #1e1e2f;
+  border: 1px solid #333;
+  border-radius: 10px;
+  padding: 16px;
+  margin-bottom: 15px;
+  transition: box-shadow 0.3s ease;
+}
+
+.doubt-item:hover {
+  box-shadow: 0 0 10px #00ff99;
+}
+
+.doubt-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  font-size: 14px;
+  color: #bbb;
+}
+
+.doubt-title-link {
+  text-decoration: none;
+  font-size: 18px;
+  color: #00e6e6;
+  font-weight: bold;
+}
+
+.doubt-title-link:hover {
+  text-decoration: underline;
+  color: #00ffff;
+}
+
+.doubt-actions {
+  margin-top: 10px;
+  display: flex;
+  gap: 10px;
+}
+
+.delete-doubt-btn {
+  background-color: #e53935;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.2s ease;
+}
+
+.delete-doubt-btn:hover {
+  background-color: #d32f2f;
+}

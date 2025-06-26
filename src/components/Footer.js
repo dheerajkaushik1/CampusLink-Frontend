@@ -16,7 +16,7 @@ function Footer() {
     <div className="foot-item-container">
         <div className={`foot-item ${activeItem === 'notes' ? 'active' : ''}`} onClick={() => {handleClick('notes')}}><Link to='/notes'>📄 Notes</Link></div>
         <div className={`foot-item ${activeItem === 'notices' ? 'active' : ''}`} onClick={() => {handleClick('notices')}}><Link to='/notices'>📢 Notices</Link></div>
-        <div className={`foot-item ${activeItem === 'doubt' ? 'active' : ''}`} onClick={() => {handleClick('doubt')}}>❓ Doubts</div>
+        <div className={`foot-item ${activeItem === 'doubt' ? 'active' : ''}`} onClick={() => {handleClick('doubts')}}>❓ Doubts</div>
         <div className={`foot-item ${activeItem === 'chat' ? 'active' : ''}`} onClick={() => {handleClick('chat')}}><Link to='/chat' onClick={() => {handleClick('chat')}}>💬 Chat</Link></div>
     </div>
   )
