@@ -99,7 +99,7 @@ function DoubtList() {
             </div>
 
             {filteredDoubts.length === 0 ? (
-                <p>{showMyDoubtsOnly ? 'You have not submitted any doubts.' : 'No doubts submitted yet.'}</p>
+                <p style={{color: "#007bff"}}><strong>⚠️{showMyDoubtsOnly ? 'You have not submitted any doubts.' : 'No doubts submitted yet.'}</strong></p>
             ) : (
                 <ul className="doubt-list">
                     {filteredDoubts.map(doubt => (
