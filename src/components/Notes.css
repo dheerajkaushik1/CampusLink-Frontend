@@ -35,6 +35,7 @@
   cursor: pointer;
   transition: background 0.3s ease;
 }
+
 .upload-note-button:hover {
   background-color: #1d4ed8;
 }
@@ -53,6 +54,8 @@
   padding: 12px 16px;
   margin-bottom: 16px;
   position: relative;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .note-link {
@@ -82,10 +85,12 @@
   background-color: #e0f2fe;
   color: #0284c7;
 }
+
 .note-btn.delete {
   background-color: #fee2e2;
   color: #b91c1c;
 }
+
 .note-btn.save {
   background-color: #d1fae5;
   color: #065f46;
@@ -104,25 +109,39 @@
 @media screen and (max-width: 480px) {
   .notes-container {
     padding: 16px;
-    width: 80%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 
   .notes-header {
     flex-direction: column;
-    align-items: stretch;
-    gap: 8px;
+    align-items: center;
+    gap: 10px;
+    text-align: center;
   }
 
   .notes-title {
     font-size: 22px;
     margin-bottom: 10px;
-    text-align: center;
   }
 
   .upload-note-button {
-    width: 80%;
+    width: 40%;
     font-size: 14px;
     padding: 12px;
+  }
+
+  .notes-list {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .note-item {
+    width: 80%;
   }
 
   .note-actions {
@@ -140,9 +159,9 @@
   }
 
   .note-link {
-    font-size: 18px;
+    font-size: 16px;
     margin-bottom: 6px;
-    width: 80%;
+    word-break: break-word;
   }
 }
 
@@ -168,5 +187,9 @@
 
   .note-input {
     font-size: 14px;
+  }
+
+  .note-item {
+    width: 100%;
   }
 }
