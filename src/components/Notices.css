@@ -135,6 +135,8 @@ textarea {
   .notices-container {
     padding: 16px 12px;
     margin: 20px 10px;
+    display: flex;
+    justify-content: center;
   }
 
   .notices-container h2 {

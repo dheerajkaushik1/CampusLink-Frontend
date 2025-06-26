@@ -104,7 +104,7 @@
 @media screen and (max-width: 480px) {
   .notes-container {
     padding: 16px;
-    width: 100%;
+    width: 80%;
   }
 
   .notes-header {
