@@ -22,6 +22,8 @@
   background: #e7f3ff;
   padding: 0.5rem;
   border-radius: 5px;
+  word-wrap: break-word;
+  flex-wrap: wrap;
 }
 
 .chat-message small {
@@ -41,6 +43,7 @@
 .chat-form {
   display: flex;
   gap: 0.5rem;
+  flex-wrap: wrap;
 }
 
 .chat-form input {
@@ -48,6 +51,7 @@
   padding: 0.5rem;
   border-radius: 5px;
   border: 1px solid #ccc;
+  min-width: 200px;
 }
 
 .chat-form button {
@@ -62,4 +66,63 @@
 .no-msg {
   text-align: center;
   color: #777;
+}
+
+/* 📱 Mobile Screens (up to 480px) */
+@media screen and (max-width: 480px) {
+  .chat-container {
+    padding: 0.5rem;
+  }
+
+  .chat-box {
+    padding: 0.5rem;
+    max-height: 300px;
+  }
+
+  .chat-message {
+    font-size: 0.9rem;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .delete-btn {
+    align-self: flex-end;
+    margin-top: 5px;
+  }
+
+  .chat-form input {
+    font-size: 0.9rem;
+  }
+
+  .chat-form button {
+    font-size: 0.9rem;
+    width: 100%;
+  }
+}
+
+/* 📱 Tablet Screens (481px to 768px) */
+@media screen and (max-width: 768px) {
+  .chat-container {
+    padding: 0.75rem;
+  }
+
+  .chat-box {
+    max-height: 350px;
+  }
+
+  .chat-message {
+    font-size: 1rem;
+  }
+
+  .chat-form {
+    flex-direction: column;
+  }
+
+  .chat-form input {
+    width: 100%;
+  }
+
+  .chat-form button {
+    width: 100%;
+  }
 }

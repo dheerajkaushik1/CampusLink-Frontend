@@ -39,3 +39,43 @@
   margin-top: 10px;
   font-weight: bold;
 }
+
+/* 📱 Mobile Screens (max-width: 480px) */
+@media screen and (max-width: 480px) {
+  .upload-note-container {
+    max-width: 90%;
+    padding: 1rem;
+  }
+
+  .upload-form input,
+  .upload-form textarea {
+    font-size: 0.9rem;
+    padding: 0.6rem;
+  }
+
+  .upload-form button {
+    font-size: 0.9rem;
+    padding: 0.7rem;
+  }
+
+  .message {
+    font-size: 0.9rem;
+  }
+}
+
+/* 💻 Tablet Screens (max-width: 768px) */
+@media screen and (max-width: 768px) {
+  .upload-note-container {
+    max-width: 90%;
+    padding: 1.2rem;
+  }
+
+  .upload-form input,
+  .upload-form textarea {
+    font-size: 0.95rem;
+  }
+
+  .upload-form button {
+    font-size: 0.95rem;
+  }
+}

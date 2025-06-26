@@ -8,6 +8,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
 }
 
 .notes-title {
@@ -51,11 +53,13 @@
   color: #0f172a;
   font-weight: 500;
   margin-bottom: 8px;
+  word-wrap: break-word;
 }
 
 .note-actions {
   display: flex;
   gap: 10px;
+  flex-wrap: wrap;
 }
 
 .note-btn {
@@ -85,4 +89,70 @@
   font-size: 14px;
   border: 1px solid #cbd5e1;
   border-radius: 6px;
+  width: 100%;
+}
+
+/* 📱 Mobile Screens (max-width: 480px) */
+@media screen and (max-width: 480px) {
+  .notes-container {
+    padding: 10px;
+  }
+
+  .notes-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .notes-title {
+    font-size: 22px;
+    margin-bottom: 10px;
+  }
+
+  .upload-note-button {
+    width: 100%;
+    font-size: 13px;
+    padding: 10px;
+  }
+
+  .note-actions {
+    flex-direction: row;
+    justify-content: flex-start;
+  }
+
+  .note-btn {
+    font-size: 13px;
+    padding: 6px 10px;
+  }
+
+  .note-input {
+    font-size: 13px;
+  }
+
+  .note-link {
+    font-size: 15px;
+  }
+}
+
+/* 💻 Tablet Screens (max-width: 768px) */
+@media screen and (max-width: 768px) {
+  .notes-container {
+    padding: 15px;
+  }
+
+  .notes-title {
+    font-size: 24px;
+  }
+
+  .upload-note-button {
+    font-size: 13.5px;
+    padding: 8px 14px;
+  }
+
+  .note-btn {
+    font-size: 13.5px;
+  }
+
+  .note-input {
+    font-size: 13.5px;
+  }
 }

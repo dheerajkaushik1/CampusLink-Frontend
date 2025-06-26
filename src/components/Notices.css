@@ -54,6 +54,7 @@
 
 .notice-actions {
   display: flex;
+  flex-wrap: wrap;
   gap: 10px;
   margin-top: 10px;
 }
@@ -69,7 +70,7 @@
 }
 
 .notice-actions button:nth-child(1) {
-  background-color: #ffc107; /* Edit */
+  background-color: #ffc107;
 }
 
 .notice-actions button:nth-child(1):hover {
@@ -77,7 +78,7 @@
 }
 
 .notice-actions button:nth-child(2) {
-  background-color: #dc3545; /* Delete */
+  background-color: #dc3545;
 }
 
 .notice-actions button:nth-child(2):hover {
@@ -85,7 +86,7 @@
 }
 
 .notice-actions button:nth-child(3) {
-  background-color: #28a745; /* Save */
+  background-color: #28a745;
 }
 
 .notice-actions button:nth-child(3):hover {
@@ -93,7 +94,7 @@
 }
 
 .notice-actions button:nth-child(4) {
-  background-color: #6c757d; /* Cancel */
+  background-color: #6c757d;
 }
 
 .notice-actions button:nth-child(4):hover {
@@ -127,4 +128,66 @@ textarea {
 
 .upload-btn:hover {
   background-color: #0056b3;
+}
+
+/* 📱 Mobile Devices */
+@media screen and (max-width: 480px) {
+  .notices-container {
+    padding: 16px 12px;
+    margin: 20px 10px;
+  }
+
+  .notices-container h2 {
+    font-size: 22px;
+  }
+
+  .notice-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  .notice-header h4 {
+    font-size: 18px;
+  }
+
+  .notice-actions {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .notice-actions button {
+    width: 100%;
+    font-size: 15px;
+  }
+
+  .upload-btn {
+    width: 100%;
+    font-size: 15px;
+    padding: 10px;
+  }
+}
+
+/* 💻 Tablets */
+@media screen and (max-width: 768px) {
+  .notices-container {
+    padding: 20px 16px;
+  }
+
+  .notices-container h2 {
+    font-size: 24px;
+  }
+
+  .notice-header h4 {
+    font-size: 19px;
+  }
+
+  .notice-actions {
+    gap: 8px;
+  }
+
+  .upload-btn {
+    font-size: 15px;
+    padding: 10px 16px;
+  }
 }
