@@ -7,18 +7,42 @@ function Notices() {
   const [notices, setNotices] = useState([]);
   const [editId, setEditId] = useState(null);
   const [editData, setEditData] = useState({ title: '', description: '' });
+  const [isAdmin, setIsAdmin] = useState(false);
 
-  /* 💡 1. — GET all notices */
+  /* 💡 1. — Fetch notices and user info */
   useEffect(() => {
-    const fetchNotices = async () => {
-      const response = await fetch('https://campuslink-4xaw.onrender.com/api/notices');
-      const data = await response.json();
-      setNotices(data);
+    const fetchAll = async () => {
+      try {
+        // 1. Fetch notices (public)
+        const noticeRes = await fetch('https://campuslink-4xaw.onrender.com/api/notices');
+        const noticeData = await noticeRes.json();
+        setNotices(noticeData);
+
+        // 2. Check admin status
+        const token = localStorage.getItem('token');
+        if (!token) return;
+
+        const userRes = await fetch('https://campuslink-4xaw.onrender.com/api/auth/getuser', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'auth-token': token,
+          },
+        });
+
+        if (!userRes.ok) return;
+
+        const userData = await userRes.json();
+        setIsAdmin(userData.isAdmin || false);
+      } catch (err) {
+        console.error('❌ Failed to fetch notices/user:', err);
+      }
     };
-    fetchNotices();
+
+    fetchAll();
   }, []);
 
-  /* 💡 2. — DELETE a notice */
+  /* 💡 2. — DELETE a notice (admin only) */
   const handleDelete = async (id) => {
     if (!window.confirm('Are you sure you want to delete this notice?')) return;
 
@@ -41,9 +65,11 @@ function Notices() {
     setEditId(notice._id);
     setEditData({ title: notice.title, description: notice.description });
   };
+
   const handleEditChange = (e) => {
     setEditData({ ...editData, [e.target.name]: e.target.value });
   };
+
   const handleEditSave = async (id) => {
     const response = await fetch(`https://campuslink-4xaw.onrender.com/api/notices/${id}`, {
       method: 'PUT',
@@ -70,48 +96,48 @@ function Notices() {
       {notices.length === 0 ? (
         <p>No notices available.</p>
       ) : (
-        <>
-          <ul className="notice-list">
-            {notices.map((notice) => (
-              <li key={notice._id} className="notice-item">
-                {/* header */}
-                <div className="notice-header">
-                  {editId === notice._id ? (
-                    <input
-                      type="text"
-                      name="title"
-                      value={editData.title}
-                      onChange={handleEditChange}
-                    />
-                  ) : (
-                    <h4>{notice.title}</h4>
-                  )}
-                  <small>{new Date(notice.uploadedAt).toLocaleDateString()}</small>
-                </div>
-
-                {/* description */}
+        <ul className="notice-list">
+          {notices.map((notice) => (
+            <li key={notice._id} className="notice-item">
+              {/* header */}
+              <div className="notice-header">
                 {editId === notice._id ? (
-                  <textarea
-                    name="description"
-                    value={editData.description}
+                  <input
+                    type="text"
+                    name="title"
+                    value={editData.title}
                     onChange={handleEditChange}
                   />
                 ) : (
-                  <p>{notice.description}</p>
+                  <h4>{notice.title}</h4>
                 )}
+                <small>{new Date(notice.uploadedAt).toLocaleDateString()}</small>
+              </div>
 
-                {/* attachment */}
-                {notice.fileUrl && (
-                  <a
-                    href={`https://campuslink-4xaw.onrender.com${notice.fileUrl}`}
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    📎 View Attachment
-                  </a>
-                )}
+              {/* description */}
+              {editId === notice._id ? (
+                <textarea
+                  name="description"
+                  value={editData.description}
+                  onChange={handleEditChange}
+                />
+              ) : (
+                <p>{notice.description}</p>
+              )}
 
-                {/* actions */}
+              {/* attachment */}
+              {notice.fileUrl && (
+                <a
+                  href={`https://campuslink-4xaw.onrender.com${notice.fileUrl}`}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  📎 View Attachment
+                </a>
+              )}
+
+              {/* actions */}
+              {isAdmin && (
                 <div className="notice-actions">
                   {editId === notice._id ? (
                     <>
@@ -125,12 +151,13 @@ function Notices() {
                     </>
                   )}
                 </div>
-              </li>
-            ))}
-          </ul>
-        </>
+              )}
+            </li>
+          ))}
+        </ul>
       )}
 
+      {/* Upload button always visible (any logged-in user) */}
       <button onClick={() => navigate('/upload-notice')} className="upload-btn">
         Upload New Notice
       </button>

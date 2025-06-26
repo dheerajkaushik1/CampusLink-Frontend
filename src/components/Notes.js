@@ -10,13 +10,10 @@ function Notes() {
   const [editNoteId, setEditNoteId] = useState(null);
   const [editedTitle, setEditedTitle] = useState('');
   const [editedDesc, setEditedDesc] = useState('');
+  const [isAdmin, setIsAdmin] = useState(false);
   const confirmShownRef = useRef(false);
 
   useEffect(() => {
-    fetchNotes();
-  }, [navigate]);
-
-  const fetchNotes = async () => {
     const token = localStorage.getItem('token');
     if (!token) {
       if (!confirmShownRef.current) {
@@ -26,13 +23,33 @@ function Notes() {
       return;
     }
 
-    try {
-      const res = await fetch(
-        'https://campuslink-4xaw.onrender.com/api/notes/getnotes',
-        { headers: { 'auth-token': token } }
-      );
+    // Fetch current user to check if admin
+    const fetchUser = async () => {
+      try {
+        const res = await fetch('https://campuslink-4xaw.onrender.com/api/auth/getuser', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'auth-token': token,
+          },
+        });
 
-      if (!res.ok) throw new Error('Unauthorized or server error');
+        if (!res.ok) throw new Error('Unauthorized');
+        const data = await res.json();
+        setIsAdmin(data.isAdmin); // store admin status
+      } catch (err) {
+        console.error('❌ Failed to fetch user:', err);
+      }
+    };
+
+    fetchUser();
+    fetchNotes();
+  }, [navigate]);
+
+  const fetchNotes = async () => {
+    try {
+      const res = await fetch('https://campuslink-4xaw.onrender.com/api/notes/getnotes');
+      if (!res.ok) throw new Error('Server error');
       const data = await res.json();
 
       const processed = data.map((n) => {
@@ -44,16 +61,20 @@ function Notes() {
 
       setNotes(processed);
     } catch (err) {
-      console.error(err);
+      console.error('❌ Fetch failed:', err);
     } finally {
       setLoading(false);
     }
   };
 
   const handleDelete = async (id) => {
+    const token = localStorage.getItem('token');
     try {
       const res = await fetch(`https://campuslink-4xaw.onrender.com/api/notes/deletenote/${id}`, {
         method: 'DELETE',
+        headers: {
+          'auth-token': token,
+        },
       });
       if (!res.ok) throw new Error('Delete failed');
       setNotes(notes.filter((n) => n._id !== id));
@@ -69,17 +90,18 @@ function Notes() {
   };
 
   const saveEdit = async (id) => {
+    const token = localStorage.getItem('token');
     try {
       const res = await fetch(`https://campuslink-4xaw.onrender.com/api/notes/editnote/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
+          'auth-token': token,
         },
         body: JSON.stringify({ title: editedTitle, description: editedDesc }),
       });
 
       if (!res.ok) throw new Error('Edit failed');
-      const updated = await res.json();
 
       setNotes(notes.map((n) => (n._id === id ? { ...n, title: editedTitle, description: editedDesc } : n)));
       setEditNoteId(null);
@@ -132,14 +154,16 @@ function Notes() {
                   >
                     {note.title || note.pdf.name}
                   </a>
-                  <div className="note-actions">
-                    <button onClick={() => handleEdit(note)} className="note-btn edit">
-                      ✏️
-                    </button>
-                    <button onClick={() => handleDelete(note._id)} className="note-btn delete">
-                      🗑️
-                    </button>
-                  </div>
+                  {isAdmin && (
+                    <div className="note-actions">
+                      <button onClick={() => handleEdit(note)} className="note-btn edit">
+                        ✏️
+                      </button>
+                      <button onClick={() => handleDelete(note._id)} className="note-btn delete">
+                        🗑️
+                      </button>
+                    </div>
+                  )}
                 </>
               )}
             </li>
