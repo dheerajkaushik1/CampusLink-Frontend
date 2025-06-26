@@ -4,6 +4,32 @@
   padding: 1rem;
 }
 
+
+body, html, #root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.chat-container {
+  max-width: 900px; 
+  margin: 0 auto;
+  padding: 1rem;
+  min-height: calc(100vh - 100px); 
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  box-sizing: border-box;
+}
+
+
+.chat-box {
+  flex-grow: 1;
+  overflow-y: auto;
+  margin-bottom: 20px;
+}
+
+
 .chat-box {
   border: 1px solid #ccc;
   padding: 1rem;

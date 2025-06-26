@@ -9,16 +9,13 @@ function Notices() {
   const [editData, setEditData] = useState({ title: '', description: '' });
   const [isAdmin, setIsAdmin] = useState(false);
 
-  /* 💡 1. — Fetch notices and user info */
   useEffect(() => {
     const fetchAll = async () => {
       try {
-        // 1. Fetch notices (public)
         const noticeRes = await fetch('https://campuslink-4xaw.onrender.com/api/notices');
         const noticeData = await noticeRes.json();
         setNotices(noticeData);
 
-        // 2. Check admin status
         const token = localStorage.getItem('token');
         if (!token) return;
 
@@ -42,7 +39,6 @@ function Notices() {
     fetchAll();
   }, []);
 
-  /* 💡 2. — DELETE a notice (admin only) */
   const handleDelete = async (id) => {
     if (!window.confirm('Are you sure you want to delete this notice?')) return;
 
@@ -60,7 +56,6 @@ function Notices() {
     }
   };
 
-  /* 💡 3. — Edit helpers */
   const handleEditClick = (notice) => {
     setEditId(notice._id);
     setEditData({ title: notice.title, description: notice.description });
@@ -91,76 +86,73 @@ function Notices() {
   };
 
   return (
-    <div className="notices-container">
-      <h2>📢 Campus Notices</h2>
-      {notices.length === 0 ? (
-        <p>No notices available.</p>
-      ) : (
-        <ul className="notice-list">
-          {notices.map((notice) => (
-            <li key={notice._id} className="notice-item">
-              {/* header */}
-              <div className="notice-header">
+    <div className="page-wrapper">
+      <div className="notices-container">
+        <h2>📢 Campus Notices</h2>
+        {notices.length === 0 ? (
+          <p>No notices available.</p>
+        ) : (
+          <ul className="notice-list">
+            {notices.map((notice) => (
+              <li key={notice._id} className="notice-item">
+                <div className="notice-header">
+                  {editId === notice._id ? (
+                    <input
+                      type="text"
+                      name="title"
+                      value={editData.title}
+                      onChange={handleEditChange}
+                    />
+                  ) : (
+                    <h4>{notice.title}</h4>
+                  )}
+                  <small>{new Date(notice.uploadedAt).toLocaleDateString()}</small>
+                </div>
+
                 {editId === notice._id ? (
-                  <input
-                    type="text"
-                    name="title"
-                    value={editData.title}
+                  <textarea
+                    name="description"
+                    value={editData.description}
                     onChange={handleEditChange}
                   />
                 ) : (
-                  <h4>{notice.title}</h4>
+                  <p>{notice.description}</p>
                 )}
-                <small>{new Date(notice.uploadedAt).toLocaleDateString()}</small>
-              </div>
 
-              {/* description */}
-              {editId === notice._id ? (
-                <textarea
-                  name="description"
-                  value={editData.description}
-                  onChange={handleEditChange}
-                />
-              ) : (
-                <p>{notice.description}</p>
-              )}
+                {notice.fileUrl && (
+                  <a
+                    href={`https://campuslink-4xaw.onrender.com${notice.fileUrl}`}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    📎 View Attachment
+                  </a>
+                )}
 
-              {/* attachment */}
-              {notice.fileUrl && (
-                <a
-                  href={`https://campuslink-4xaw.onrender.com${notice.fileUrl}`}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  📎 View Attachment
-                </a>
-              )}
+                {isAdmin && (
+                  <div className="notice-actions">
+                    {editId === notice._id ? (
+                      <>
+                        <button onClick={() => handleEditSave(notice._id)}>💾 Save</button>
+                        <button onClick={() => setEditId(null)}>❌ Cancel</button>
+                      </>
+                    ) : (
+                      <>
+                        <button onClick={() => handleEditClick(notice)}>✏️ Edit</button>
+                        <button onClick={() => handleDelete(notice._id)}>🗑️ Delete</button>
+                      </>
+                    )}
+                  </div>
+                )}
+              </li>
+            ))}
+          </ul>
+        )}
 
-              {/* actions */}
-              {isAdmin && (
-                <div className="notice-actions">
-                  {editId === notice._id ? (
-                    <>
-                      <button onClick={() => handleEditSave(notice._id)}>💾 Save</button>
-                      <button onClick={() => setEditId(null)}>❌ Cancel</button>
-                    </>
-                  ) : (
-                    <>
-                      <button onClick={() => handleEditClick(notice)}>✏️ Edit</button>
-                      <button onClick={() => handleDelete(notice._id)}>🗑️ Delete</button>
-                    </>
-                  )}
-                </div>
-              )}
-            </li>
-          ))}
-        </ul>
-      )}
-
-      {/* Upload button always visible (any logged-in user) */}
-      <button onClick={() => navigate('/upload-notice')} className="upload-btn">
-        Upload New Notice
-      </button>
+        <button onClick={() => navigate('/upload-notice')} className="upload-btn">
+          Upload New Notice
+        </button>
+      </div>
     </div>
   );
 }

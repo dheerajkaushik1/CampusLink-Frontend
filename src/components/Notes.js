@@ -23,7 +23,6 @@ function Notes() {
       return;
     }
 
-    // Fetch current user to check if admin
     const fetchUser = async () => {
       try {
         const res = await fetch('https://campuslink-4xaw.onrender.com/api/auth/getuser', {
@@ -36,7 +35,7 @@ function Notes() {
 
         if (!res.ok) throw new Error('Unauthorized');
         const data = await res.json();
-        setIsAdmin(data.isAdmin); // store admin status
+        setIsAdmin(data.isAdmin);
       } catch (err) {
         console.error('❌ Failed to fetch user:', err);
       }
@@ -102,7 +101,6 @@ function Notes() {
       });
 
       if (!res.ok) throw new Error('Edit failed');
-
       setNotes(notes.map((n) => (n._id === id ? { ...n, title: editedTitle, description: editedDesc } : n)));
       setEditNoteId(null);
     } catch (err) {
@@ -113,63 +111,65 @@ function Notes() {
   if (loading) return <Loading />;
 
   return (
-    <div className="notes-container">
-      <div className="notes-header">
-        <h2 className="notes-title">Available Notes</h2>
-        <button className="upload-note-button" onClick={() => navigate('/uploadnote')}>
-          Upload Note
-        </button>
-      </div>
+    <div className="page-wrapper">
+      <div className="notes-container">
+        <div className="notes-header">
+          <h2 className="notes-title">Available Notes</h2>
+          <button className="upload-note-button" onClick={() => navigate('/uploadnote')}>
+            Upload Note
+          </button>
+        </div>
 
-      {notes.length === 0 ? (
-        <p>No notes found.</p>
-      ) : (
-        <ul className="notes-list">
-          {notes.map((note) => (
-            <li key={note._id} className="note-item">
-              {editNoteId === note._id ? (
-                <>
-                  <input
-                    className="note-input"
-                    value={editedTitle}
-                    onChange={(e) => setEditedTitle(e.target.value)}
-                  />
-                  <textarea
-                    className="note-input"
-                    value={editedDesc}
-                    onChange={(e) => setEditedDesc(e.target.value)}
-                  />
-                  <button onClick={() => saveEdit(note._id)} className="note-btn save">
-                    Save
-                  </button>
-                </>
-              ) : (
-                <>
-                  <a
-                    href={note.blobUrl}
-                    download={note.pdf.name}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="note-link"
-                  >
-                    {note.title || note.pdf.name}
-                  </a>
-                  {isAdmin && (
-                    <div className="note-actions">
-                      <button onClick={() => handleEdit(note)} className="note-btn edit">
-                        ✏️
-                      </button>
-                      <button onClick={() => handleDelete(note._id)} className="note-btn delete">
-                        🗑️
-                      </button>
-                    </div>
-                  )}
-                </>
-              )}
-            </li>
-          ))}
-        </ul>
-      )}
+        {notes.length === 0 ? (
+          <p>No notes found.</p>
+        ) : (
+          <ul className="notes-list">
+            {notes.map((note) => (
+              <li key={note._id} className="note-item">
+                {editNoteId === note._id ? (
+                  <>
+                    <input
+                      className="note-input"
+                      value={editedTitle}
+                      onChange={(e) => setEditedTitle(e.target.value)}
+                    />
+                    <textarea
+                      className="note-input"
+                      value={editedDesc}
+                      onChange={(e) => setEditedDesc(e.target.value)}
+                    />
+                    <button onClick={() => saveEdit(note._id)} className="note-btn save">
+                      Save
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <a
+                      href={note.blobUrl}
+                      download={note.pdf.name}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="note-link"
+                    >
+                      {note.title || note.pdf.name}
+                    </a>
+                    {isAdmin && (
+                      <div className="note-actions">
+                        <button onClick={() => handleEdit(note)} className="note-btn edit">
+                          ✏️
+                        </button>
+                        <button onClick={() => handleDelete(note._id)} className="note-btn delete">
+                          🗑️
+                        </button>
+                      </div>
+                    )}
+                  </>
+                )}
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
     </div>
   );
 }
