@@ -3,7 +3,7 @@
   margin: auto;
   padding: 20px;
   color: #eee;
-  height: 80vh;
+  min-height: 80vh;
 }
 
 .doubt-header-bar {
@@ -69,6 +69,7 @@
   margin-bottom: 10px;
   font-size: 14px;
   color: #bbb;
+  flex-wrap: wrap;
 }
 
 .doubt-title-link {
@@ -87,6 +88,7 @@
   margin-top: 10px;
   display: flex;
   gap: 10px;
+  flex-wrap: wrap;
 }
 
 .delete-doubt-btn {
@@ -102,4 +104,68 @@
 
 .delete-doubt-btn:hover {
   background-color: #d32f2f;
+}
+
+/* ------------------------- */
+/* 📱 Mobile (≤767px) */
+/* ------------------------- */
+@media (max-width: 767px) {
+  .doubt-list-container {
+    padding: 15px;
+  }
+
+  .doubt-header-bar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .doubt-controls {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .ask-doubt-btn,
+  .delete-doubt-btn {
+    font-size: 13px;
+    padding: 6px 12px;
+  }
+
+  .doubt-title-link {
+    font-size: 16px;
+  }
+
+  .doubt-item {
+    padding: 14px;
+  }
+
+  .doubt-header {
+    font-size: 13px;
+    flex-direction: column;
+    gap: 4px;
+  }
+}
+
+/* ---------------------------- */
+/* 📱 Tablet (768px–1024px) */
+/* ---------------------------- */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .doubt-list-container {
+    padding: 18px;
+  }
+
+  .ask-doubt-btn,
+  .delete-doubt-btn {
+    font-size: 14px;
+    padding: 7px 14px;
+  }
+
+  .doubt-title-link {
+    font-size: 17px;
+  }
+
+  .doubt-header {
+    font-size: 13.5px;
+  }
 }

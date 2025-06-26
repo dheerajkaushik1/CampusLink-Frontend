@@ -122,3 +122,102 @@ h3 {
 .delete-answer-btn:hover {
   background-color: #d32f2f;
 }
+
+/* ------------------------ */
+/* 📱 Mobile (≤767px) */
+/* ------------------------ */
+@media (max-width: 767px) {
+  .doubt-detail-container {
+    padding: 15px;
+    margin: 20px 10px;
+  }
+
+  .doubt-box {
+    padding: 15px;
+  }
+
+  .doubt-box h2 {
+    font-size: 18px;
+  }
+
+  .doubt-box p {
+    font-size: 14px;
+  }
+
+  .doubt-box small {
+    font-size: 11px;
+  }
+
+  .answer-form textarea {
+    min-height: 80px;
+    font-size: 13px;
+    padding: 10px;
+  }
+
+  .answer-form button {
+    font-size: 13px;
+    padding: 7px 14px;
+  }
+
+  h3 {
+    font-size: 18px;
+  }
+
+  .answer-item {
+    padding: 12px;
+  }
+
+  .answer-item p {
+    font-size: 14px;
+  }
+
+  .answer-item small {
+    font-size: 11px;
+  }
+
+  .delete-answer-btn {
+    font-size: 12px;
+    padding: 5px 10px;
+  }
+}
+
+/* ------------------------ */
+/* 📱 Tablet (768px–1024px) */
+/* ------------------------ */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .doubt-detail-container {
+    padding: 20px;
+    margin: 30px 15px;
+  }
+
+  .doubt-box {
+    padding: 18px;
+  }
+
+  .doubt-box h2 {
+    font-size: 20px;
+  }
+
+  .doubt-box p {
+    font-size: 15px;
+  }
+
+  .answer-form textarea {
+    font-size: 14px;
+    padding: 12px;
+  }
+
+  .answer-form button {
+    font-size: 14px;
+    padding: 8px 16px;
+  }
+
+  .answer-item p {
+    font-size: 15px;
+  }
+
+  .delete-answer-btn {
+    font-size: 13px;
+    padding: 6px 12px;
+  }
+}
