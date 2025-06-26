@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './UploadNotice.css';
 import { useNavigate } from 'react-router-dom';
+import Loading from '../components/Loading'; // Adjust the path if needed
 
 function UploadNotice() {
   const navigate = useNavigate();
@@ -57,6 +58,8 @@ function UploadNotice() {
     }
   };
 
+  if (loading) return <Loading />;
+
   return (
     <div className="page-wrapper">
       <div className="upload-notice-container">
@@ -84,8 +87,8 @@ function UploadNotice() {
             onChange={handleFileChange}
             required
           />
-          <button type="submit" disabled={loading}>
-            {loading ? 'Uploading...' : 'Upload Notice'}
+          <button type="submit">
+            Upload Notice
           </button>
         </form>
       </div>

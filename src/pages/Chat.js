@@ -1,22 +1,21 @@
 import React, { useEffect, useState, useRef } from 'react';
 import './Chat.css';
 import { useNavigate } from 'react-router-dom';
+import Loading from '../components/Loading';
 
 function Chat() {
   const [messages, setMessages] = useState([]);
   const [text, setText] = useState('');
   const [year, setYear] = useState('');
+  const [loading, setLoading] = useState(true);
   const messagesEndRef = useRef(null);
   const navigate = useNavigate();
 
   const token = localStorage.getItem('token');
   const userId = token ? JSON.parse(atob(token.split('.')[1])).id : null;
 
-  // Redirect if no token
   useEffect(() => {
-    if (!token) {
-      navigate('/login');
-    }
+    if (!token) navigate('/login');
   }, [token, navigate]);
 
   const fetchUserYear = async () => {
@@ -26,7 +25,6 @@ function Chat() {
         headers: { 'Content-Type': 'application/json', 'auth-token': token }
       });
       const data = await res.json();
-
       if (!res.ok) throw new Error(data.error || 'Unauthorized');
       setYear(data.year);
     } catch (err) {
@@ -40,7 +38,6 @@ function Chat() {
         headers: { 'auth-token': token }
       });
       const data = await res.json();
-
       if (!res.ok || !Array.isArray(data)) throw new Error('Failed to load messages');
       setMessages(data);
     } catch (err) {
@@ -50,10 +47,14 @@ function Chat() {
   };
 
   useEffect(() => {
-    if (token) {
-      fetchUserYear();
-      fetchMessages();
-    }
+    const init = async () => {
+      setLoading(true);
+      await fetchUserYear();
+      await fetchMessages();
+      setLoading(false);
+    };
+
+    if (token) init();
   }, [token]);
 
   useEffect(() => {
@@ -76,7 +77,6 @@ function Chat() {
 
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Message send failed');
-
       setMessages(prev => [...prev, data]);
       setText('');
     } catch (err) {
@@ -100,12 +100,14 @@ function Chat() {
     }
   };
 
+  if (loading) return <Loading />;
+
   return (
     <div className="chat-container">
       <h2>💬 {year ? `${year} Year Chat` : 'Loading...'}</h2>
 
       <div className="chat-box">
-        {Array.isArray(messages) && messages.length > 0 ? (
+        {messages.length > 0 ? (
           messages.map((msg, idx) => (
             <div key={idx} className="chat-message">
               <div>

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './UploadNote.css';
 import { useNavigate } from 'react-router-dom';
+import Loading from '../components/Loading'; // ⬅️ Make sure this path is correct
 
 function UploadNote() {
   const [title, setTitle] = useState('');
@@ -8,6 +9,7 @@ function UploadNote() {
   const [pdfFile, setPdfFile] = useState(null);
   const [message, setMessage] = useState('');
   const [isUploading, setIsUploading] = useState(false);
+  const [authLoading, setAuthLoading] = useState(true);
   const navigate = useNavigate();
 
   // ✅ Admin check on mount
@@ -32,10 +34,10 @@ function UploadNote() {
       .catch(() => {
         alert('⛔ Failed to verify user');
         navigate('/');
-      });
+      })
+      .finally(() => setAuthLoading(false));
   }, [navigate]);
 
-  // ✅ Handle Upload
   const handleUpload = async (e) => {
     e.preventDefault();
     if (!title || !description || !pdfFile) {
@@ -53,7 +55,7 @@ function UploadNote() {
       const res = await fetch('https://campuslink-4xaw.onrender.com/api/notes/uploadnotes', {
         method: 'POST',
         headers: {
-          'auth-token': localStorage.getItem('token') // ✅ Secure header
+          'auth-token': localStorage.getItem('token')
         },
         body: formData
       });
@@ -75,7 +77,7 @@ function UploadNote() {
       setTitle('');
       setDescription('');
       setPdfFile(null);
-      document.getElementById('pdf-input').value = ''; // Reset file input
+      document.getElementById('pdf-input').value = '';
     } catch (err) {
       console.error('❌ Upload error:', err);
       setMessage(err.message || '❌ Upload failed');
@@ -83,6 +85,8 @@ function UploadNote() {
       setIsUploading(false);
     }
   };
+
+  if (authLoading) return <Loading />;
 
   return (
     <div className="upload-note-container">
@@ -109,7 +113,7 @@ function UploadNote() {
           required
         />
         <button type="submit" disabled={isUploading}>
-          {isUploading ? 'Uploading...' : 'Upload Note'}
+          {isUploading ? <Loading /> : 'Upload Note'}
         </button>
         {message && <p className="message">{message}</p>}
       </form>

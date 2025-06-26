@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './Notices.css';
 import { useNavigate } from 'react-router-dom';
+import Loading from '../components/Loading';
 
 function Notices() {
   const navigate = useNavigate();
@@ -8,6 +9,7 @@ function Notices() {
   const [editId, setEditId] = useState(null);
   const [editData, setEditData] = useState({ title: '', description: '' });
   const [isAdmin, setIsAdmin] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchAll = async () => {
@@ -17,22 +19,24 @@ function Notices() {
         setNotices(noticeData);
 
         const token = localStorage.getItem('token');
-        if (!token) return;
+        if (token) {
+          const userRes = await fetch('https://campuslink-4xaw.onrender.com/api/auth/getuser', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'auth-token': token,
+            },
+          });
 
-        const userRes = await fetch('https://campuslink-4xaw.onrender.com/api/auth/getuser', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'auth-token': token,
-          },
-        });
-
-        if (!userRes.ok) return;
-
-        const userData = await userRes.json();
-        setIsAdmin(userData.isAdmin || false);
+          if (userRes.ok) {
+            const userData = await userRes.json();
+            setIsAdmin(userData.isAdmin || false);
+          }
+        }
       } catch (err) {
         console.error('❌ Failed to fetch notices/user:', err);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -78,12 +82,16 @@ function Notices() {
     const data = await response.json();
     if (response.ok) {
       alert('Notice updated!');
-      setNotices((prev) => prev.map((n) => (n._id === id ? { ...n, ...editData } : n)));
+      setNotices((prev) =>
+        prev.map((n) => (n._id === id ? { ...n, ...editData } : n))
+      );
       setEditId(null);
     } else {
       alert(data.msg || 'Error updating notice');
     }
   };
+
+  if (loading) return <Loading />;
 
   return (
     <div className="page-wrapper">

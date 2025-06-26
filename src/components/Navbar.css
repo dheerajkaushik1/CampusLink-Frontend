@@ -75,21 +75,25 @@
 
 @media screen and (max-width: 480px) {
   .navbar {
-    padding: 14px 12px;
+   padding-top: 15px;
+   padding-bottom: 15px;
+    width: 100hvw;
   }
 
   .navbar-logo a {
     font-size: 1.4rem;
+    margin: 6px;
   }
 
   .navbar-auth {
     flex-direction: column;
-    gap: 6px;
+    gap: 10px;
   }
 
   .navbar-auth .btn {
     font-size: 0.95rem;
     padding: 8px 12px;
-    width: 100%;
+    width: 50%;
+    margin: auto;
   }
 }

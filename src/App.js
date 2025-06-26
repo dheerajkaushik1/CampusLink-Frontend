@@ -10,6 +10,8 @@ import Notices from './components/Notices';
 import UploadNotice from './components/UploadNotice';
 import Chat from './pages/Chat';
 import UploadNote from './components/UploadNote';
+import Home from './pages/Home';
+import Doubt from './components/Doubt';  
 
 function App() {
   return (
@@ -24,6 +26,8 @@ function App() {
         <Route path='/upload-notice' element={<UploadNotice />} key='notes' />
         <Route path='/chat' element={<Chat />} key='notes' />
         <Route path="/uploadnote" element={<UploadNote />} />
+        <Route path='/' element={<Home />} />
+        <Route path='/doubt' element={<Doubt />} />
       </Routes>
       <Footer />
       </BrowserRouter>
