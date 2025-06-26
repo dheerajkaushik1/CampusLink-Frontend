@@ -28,7 +28,7 @@ function Home() {
           <button onClick={() => navigate('/notes')}>📄 View Notes</button>
           <button onClick={() => navigate('/notices')}>📢 See Notices</button>
           <button onClick={() => navigate('/chat')}>💬 Open Chat</button>
-          <button onClick={() => navigate('/doubts')}>❓ Ask a Doubt</button>
+          <button onClick={() => navigate('/doubt')}>❓ Ask a Doubt</button>
         </div>
       </div>
     </div>
